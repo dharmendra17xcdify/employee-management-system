@@ -1,0 +1,22 @@
+
+    .Login {
+        padding: 60px 0;
+    }
+
+    .Login form {
+        margin: 0 auto;
+        max-width: 320px;
+    }
+
+    .AddAuthorForm {
+        width: 80%;
+        margin: 50px 10%;
+    }
+    
+    .Input_Field {
+        margin-bottom: 20px;
+    }
+    
+    .Input_Field > label {
+        display: block;
+    }
