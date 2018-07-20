@@ -30,28 +30,27 @@ import "./Login.css";
   render() {
     return (
       <div className="Login">
-        <form onSubmit={this.handleSubmit}>
-          <div className="Input_Field">
-            <label htmlFor="email">Email</label>
-            <input
-              className="form-control"
-              autoFocus
-              type="email"
-              value={this.state.email}
-              onChange={this.handleChange}
-            />
+      <Link to="/home">Home</Link> | <Link to="/profile">Profile</Link> | <Link to="/employee-regitration">Register</Link>
+        
+        <form className="modal-content animate" action="/action_page.php">
+          <div className="container">
+            <label forhtml="uname"><b>Username</b></label>
+            <input type="text" placeholder="Enter Username" name="uname" required/>
+
+            <label forhtml="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required/>
+              
+            <button type="submit">Login</button>
+            <label>
+              <input type="checkbox" name="remember"/> Remember me
+            </label>
           </div>
-          <div className="Input_Field">
-            <label htmlFor="password">Password</label>
-            <input
-              value={this.state.password}
-              onChange={this.handleChange}
-              type="password"
-            />
+
+          <div className="container">
+            <button type="button"  className="cancelbtn">Cancel</button>
+            <span className="psw">Forgot <a href="#">password?</a></span>
           </div>
-          <input className="btn btn-primary" type="submit" value="Login" disabled={!this.validateForm()} />
         </form>
-        <Link to="/profile">Profile</Link>
       </div>
     );
   }

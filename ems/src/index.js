@@ -7,11 +7,13 @@ import Login from '../src/containers/Login';
 import Profile from './Profile';
 import EmployeeRegistration from './EmployeeRegistration'
 import registerServiceWorker from './registerServiceWorker';
+import Home from './Home';
 
 ReactDOM.render(
 <BrowserRouter>
     <React.Fragment>
         <Route exact path="/" component={Login}/> 
+        <Route exact path="/home" component={Home}/>
         <Route exact path="/profile" component={Profile}/>
         <Route exact path="/employee-regitration" component={EmployeeRegistration}/>
     </React.Fragment>
