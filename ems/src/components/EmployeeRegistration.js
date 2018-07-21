@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import "./EmployeeRegistration.css";
+import withAuthorization from './withAuthorization';
 
-class EmployeeRegistration extends React.Component{
 
-    render(){
-        return <form >
+const EmployeeRegistration = () =>
+  <AuthUserContext.Consumer>
+    {authUser =>
+      <div>
+        <form >
             <div className="container">
                 <h1>Register</h1>
                 <p>Please fill in this form to create an account.</p>
@@ -27,7 +30,10 @@ class EmployeeRegistration extends React.Component{
             <p>Already have an account? <a href="/">Sign in</a>.</p>
             </div>
         </form>
+      </div>
     }
-}
+  </AuthUserContext.Consumer>
 
-export default EmployeeRegistration
+const authCondition = (authUser) => !!authUser;
+
+export default withAuthorization(authCondition)(EmployeeRegistration);

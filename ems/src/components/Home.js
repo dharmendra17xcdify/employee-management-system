@@ -22,7 +22,6 @@ class HomePage extends Component {
     const { users } = this.state;
     return (
       <div>
-        <h1>Home</h1>
         <div>
             <div className="container-fluid">
                 <div className="row content">

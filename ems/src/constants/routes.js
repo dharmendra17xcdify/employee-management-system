@@ -4,3 +4,5 @@ export const LANDING = '/';
 export const HOME = '/home';
 export const ACCOUNT = '/account';
 export const PASSWORD_FORGET = '/pw-forget';
+export const ADD_EMPLOYEE = '/employee-registration';
+export const PROFILE = '/profile';

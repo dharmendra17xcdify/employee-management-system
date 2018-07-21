@@ -3,11 +3,8 @@ import ReactDOM from 'react-dom';
 import {BrowserRouter, Route, withRouter}  from 'react-router-dom';
 import './index.css';
 import App from './components/App';
-import Login from '../src/containers/Login';
-import Profile from './Profile';
-import EmployeeRegistration from './EmployeeRegistration'
+
 import registerServiceWorker from './registerServiceWorker';
-import Home from './Home';
 
 ReactDOM.render(
 <BrowserRouter>
