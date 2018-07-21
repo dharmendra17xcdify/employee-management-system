@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import { SignUpLink } from './SignUp';
+import { PasswordForgetLink } from './PasswordForget';
 import { auth } from '../firebase';
 import * as routes from '../constants/routes';
+import "./SignIn.css";
 
 const SignInPage = ({ history }) =>
   <div>
-    <h1>SignIn</h1>
     <SignInForm history={history} />
-    <SignUpLink />
+    
   </div>
 
 const byPropKey = (propertyName, value) => () => ({
@@ -62,14 +63,18 @@ class SignInForm extends Component {
       password === '' ||
       email === '';
 
-    return (
-      <form onSubmit={this.onSubmit}>
+    return ( 
+    <div className="Login">
+      <form className="modal-content animate" onSubmit={this.onSubmit}>
+      <div className="container">
+      <label forhtml="uname"><b>Email</b></label>
         <input
           value={email}
           onChange={event => this.setState(byPropKey('email', event.target.value))}
           type="text"
           placeholder="Email Address"
         />
+        <label forhtml="psw"><b>Password</b></label>
         <input
           value={password}
           onChange={event => this.setState(byPropKey('password', event.target.value))}
@@ -79,9 +84,16 @@ class SignInForm extends Component {
         <button disabled={isInvalid} type="submit">
           Sign In
         </button>
+        <label>
+              <input type="checkbox" name="remember"/> Remember me
+        </label>
 
         { error && <p>{error.message}</p> }
+        <PasswordForgetLink />
+        <SignUpLink />
+        </div>
       </form>
+    </div>
     );
   }
 }
