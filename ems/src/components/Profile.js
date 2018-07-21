@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import withAuthorization from './withAuthorization';
+//import withAuthorization from './withAuthorization';
 
 class Profile extends React.Component{
     constructor(props){
@@ -69,6 +69,7 @@ class Profile extends React.Component{
     }
 }
 
-const authCondition = (authUser) => !!authUser;
+export default Profile;
+// const authCondition = (authUser) => !!authUser;
 
-export default withAuthorization(authCondition)(Profile);
+// export default withAuthorization(authCondition)(Profile);
