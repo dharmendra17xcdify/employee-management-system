@@ -1,0 +1,13 @@
+.employee {
+    cursor: pointer;
+    color: black;
+}
+
+.selected:hover {
+    color: white;
+    background-color: green;
+}
+
+.input-group-btn:last-child>.btn, .input-group-btn:last-child>.btn-group {
+    margin-bottom: -8px;
+}

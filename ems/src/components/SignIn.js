@@ -65,8 +65,9 @@ class SignInForm extends Component {
 
     return ( 
     <div className="Login">
+    <h2 align="center">Sign In</h2>
       <form className="modal-content animate" onSubmit={this.onSubmit}>
-      <div className="container">
+      <div className="signin">
       <label forhtml="uname"><b>Email</b></label>
         <input
           value={email}

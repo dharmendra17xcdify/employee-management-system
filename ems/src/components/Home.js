@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
+import './Home.css';
 
 const employees = ['Dharmendra', 'Vaibhav', 'Yogesh', 'Srivats', 'Anurag'];
 
@@ -14,54 +15,74 @@ const employeeData = [
         email: 'dharmendra17893@gmail.com',
         mobile: 8108401991,
         experience: '1 Year',
-        doj: '01/06/2017'
+        doj: '01/06/2017',
+        leavesAllotted: 12,
+        leavesTaken: 6,
+        checkIn: '10:13:25 AM',
+        checkOut: '08:20:30 PM'
 
     },
     {
         name: 'Vaibhav',
         fullName: 'Vaibhav Agrawal',
         imageUrl: 'images/authors/marktwain.jpg',
-        dob: '17/08/1993',
-        email: 'dharmendra17893@gmail.com',
-        mobile: 8108401991,
-        experience: '1 Year',
-        doj: '01/06/2017'
+        dob: '04/04/1991',
+        email: 'vaibhav.agrawal@xcdify.com',
+        mobile: 8147286210,
+        experience: '5 Years',
+        doj: '01/12/2016',
+        leavesAllotted: 12,
+        leavesTaken: 5,
+        checkIn: '10:05:25 AM',
+        checkOut: '08:20:30 PM'
     },
     {
         name: 'Yogesh',
         fullName: 'Yogesh Dhami',
         imageUrl: 'images/authors/marktwain.jpg',
-        dob: '17/08/1993',
-        email: 'dharmendra17893@gmail.com',
-        mobile: 8108401991,
-        experience: '1 Year',
-        doj: '01/06/2017'
+        dob: '05/11/1988',
+        email: 'yogesh.dhami@xcdify.com',
+        mobile: 7987225434,
+        experience: '3 Year',
+        doj: '01/06/2016',
+        leavesAllotted: 12,
+        leavesTaken: 2,
+        checkIn: '10:05:25 AM',
+        checkOut: '08:00:30 PM'
     },
     {
         name: 'Srivats',
         fullName: 'Srivats Krishnan',
         imageUrl: 'images/authors/marktwain.jpg',
         dob: '17/08/1993',
-        email: 'dharmendra17893@gmail.com',
-        mobile: 8108401991,
+        email: 'shrivats@gmail.com',
+        mobile: 9825369988,
         experience: '1 Year',
-        doj: '01/06/2017'
+        doj: '01/08/2017',
+        leavesAllotted: 12,
+        leavesTaken: 4,
+        checkIn: '10:11:25 AM',
+        checkOut: '08:15:30 PM'
     },
     {
         name: 'Anurag',
         fullName: 'Anurag Maratha',
         imageUrl: 'images/authors/marktwain.jpg',
         dob: '17 Aug 1993',
-        email: 'dharmendra17893@gmail.com',
-        mobile: 8108401991,
-        experience: '1 Year',
-        doj: '01/06/2017'
+        email: 'anurag@gmail.com',
+        mobile: 8822556644,
+        experience: 'Fresher',
+        doj: '01/05/2018',
+        leavesAllotted: 12,
+        leavesTaken: 1,
+        checkIn: '10:15:25 AM',
+        checkOut: '08:10:30 PM'
     }
 ];
 
 function Employee ({title, onClick}) {
-    return (<div className="answer">
-    <h4 value={title} data-id={title}>{title}</h4>
+    return (<div>
+    <h4 className="selected" value={title} data-id={title}>{title}</h4>
     </div>
     );
   }
@@ -83,7 +104,11 @@ class HomePage extends Component {
         email: 'dharmendra17893@gmail.com',
         mobile: 8108401991,
         experience: '1 Year',
-        doj: '01/06/2017'
+        doj: '01/06/2017',
+        leavesAllotted: 12,
+        leavesTaken: 6,
+        checkIn: '10:13:25 AM',
+        checkOut: '08:20:30 PM'
       }
     };
   }
@@ -94,23 +119,29 @@ class HomePage extends Component {
     );
   }
 
-  handleClick = (e, data) => {
+  handleClick = (e) => {
     // access to e.target here
     console.log(e.target.innerText);
     let emp = _.find(employeeData, {name: e.target.innerText})
 
-    this.setState({
-        employeeDetails: {
-            name: emp.name,
-            fullName: emp.fullName,
-            imageUrl: emp.imageUrl,
-            dob: emp.dob,
-            email: emp.email,
-            mobile: emp.mobile,
-            experience: emp.experience,
-            doj: emp.doj
-        }
-    });
+    if(emp){
+        this.setState({
+            employeeDetails: {
+                name: emp.name,
+                fullName: emp.fullName,
+                imageUrl: emp.imageUrl,
+                dob: emp.dob,
+                email: emp.email,
+                mobile: emp.mobile,
+                experience: emp.experience,
+                doj: emp.doj,
+                leavesAllotted: emp.leavesAllotted,
+                leavesTaken: emp.leavesTaken,
+                checkIn: emp.checkIn,
+                checkOut: emp.checkOut
+            }
+        });
+    }
   }
 
   render() {
@@ -131,7 +162,7 @@ class HomePage extends Component {
                             </span>
                         </div>
                         <ul className="nav nav-pills nav-stacked">
-                            <li value={employees} onClick={this.handleClick.bind(this)}>{employees.map((title) => <Employee title={title} key={title}/>)}</li>
+                            <li className="employee" value={employees} onClick={this.handleClick.bind(this)}>{employees.map((title) => <Employee title={title} key={title}/>)}</li>
                         </ul><br></br>
                     </div>
                     <div className="col-sm-9 jumbotron">
@@ -139,11 +170,12 @@ class HomePage extends Component {
                             <div className="panel panel-primary">
                                 <div className="panel-heading">Employee Details</div>
                                 <div className="panel-body">
-                                Name: {this.state.employeeDetails.fullName}<br/>
-                                Email: {this.state.employeeDetails.email}<br/>
-                                Mobile: {this.state.employeeDetails.mobile}<br/>
-                                DOJ: {this.state.employeeDetails.doj}<br/>
-                                DOB: {this.state.employeeDetails.dob}
+                                <strong>Name: </strong>{this.state.employeeDetails.fullName}<br/>
+                                <strong>Email: </strong>{this.state.employeeDetails.email}<br/>
+                                <strong>Mobile: </strong>{this.state.employeeDetails.mobile}<br/>
+                                <strong>DOJ: </strong>{this.state.employeeDetails.doj}<br/>
+                                <strong>DOB: </strong>{this.state.employeeDetails.dob}<br/>
+                                <strong>Experience: </strong>{this.state.employeeDetails.experience}
                                 </div>
                             </div>
                         </div>
@@ -151,7 +183,8 @@ class HomePage extends Component {
                             <div className="panel panel-primary">
                                 <div className="panel-heading">Today's Check in / out</div>
                                 <div className="panel-body">
-                                Panel Content
+                                <strong>CheckIn Time: </strong>{this.state.employeeDetails.checkIn}<br/>
+                                <strong>CheckOut Time: </strong>{this.state.employeeDetails.checkOut}
                                 </div>
                             </div>
                         </div>
@@ -159,7 +192,8 @@ class HomePage extends Component {
                             <div className="panel panel-primary">
                                 <div className="panel-heading">Yearly Leave Details</div>
                                 <div className="panel-body">
-                                Panel Content
+                                <strong>Leaves Allotted: </strong>{this.state.employeeDetails.leavesAllotted}<br/>
+                                <strong>Leaves Taken: </strong>{this.state.employeeDetails.leavesTaken}
                                 </div>
                             </div>
                         </div>

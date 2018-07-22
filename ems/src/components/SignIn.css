@@ -1,6 +1,6 @@
 
     .Login {
-        padding: 60px 0;
+        padding: 0px 0;
     }
 
     .Login form {
@@ -17,6 +17,7 @@ input[type=text], input[type=password] {
     border: 1px solid #ccc;
     box-sizing: border-box;
 }
+
 
 /* Set a style for all buttons */
 button {
@@ -81,7 +82,7 @@ span.psw {
 .modal-content {
     background-color: #fefefe;
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-    width: 80%; /* Could be more or less, depending on screen size */
+    width: 50%; /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button (x) */
@@ -104,6 +105,12 @@ span.psw {
 .animate {
     -webkit-animation: animatezoom 0.6s;
     animation: animatezoom 0.6s
+}
+
+.signin {
+    width: 318px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 @-webkit-keyframes animatezoom {
