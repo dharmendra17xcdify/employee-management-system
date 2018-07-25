@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./EmployeeRegistration.css";
 import withAuthorization from './withAuthorization';
+import AuthUserContext from './AuthUserContext';
 
 
 const EmployeeRegistration = () =>

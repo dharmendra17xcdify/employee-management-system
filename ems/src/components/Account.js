@@ -4,6 +4,7 @@ import AuthUserContext from './AuthUserContext';
 import { PasswordForgetForm } from './PasswordForget';
 import PasswordChangeForm from './PasswordChange';
 import withAuthorization from './withAuthorization';
+import EmployeeDetails from './Employee';
 
 const AccountPage = () =>
   <AuthUserContext.Consumer>

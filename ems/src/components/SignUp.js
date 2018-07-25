@@ -98,7 +98,7 @@ class SignUpForm extends Component {
           type="password"
           placeholder="Confirm Password"
         />
-        <button disabled={isInvalid} type="submit">
+        <button disabled={isInvalid} type="submit" onClick={this.onSubmit} className="btn btn-primary">
           Sign Up
         </button>
 

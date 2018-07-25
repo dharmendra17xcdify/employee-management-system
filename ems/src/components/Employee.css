@@ -1,0 +1,17 @@
+.emp-container {
+	margin-top: 20px;
+	width: 90%;
+	margin: 0 auto;
+}
+
+.search-option {
+	padding:20px 0;
+	display: inline-block;
+    width: 100%;
+}
+
+.emp-details {
+	padding:20px 0;
+	display: inline-block;
+    width: 100%;
+}

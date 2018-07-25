@@ -7,6 +7,7 @@ import { auth } from '../firebase';
 import * as routes from '../constants/routes';
 import "./SignIn.css";
 
+
 const SignInPage = ({ history }) =>
   <div>
     <SignInForm history={history} />
@@ -21,6 +22,7 @@ const INITIAL_STATE = {
   email: '',
   password: '',
   error: null,
+  isLoggedIn: false,
 };
 
 class SignInForm extends Component {
@@ -82,7 +84,7 @@ class SignInForm extends Component {
           type="password"
           placeholder="Password"
         />
-        <button disabled={isInvalid} type="submit">
+        <button disabled={isInvalid} type="submit" className="btn btn-primary">
           Sign In
         </button>
         <label>
