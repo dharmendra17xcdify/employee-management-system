@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Route,
+  Route,Switch
 } from 'react-router-dom';
 
 import Navigation from './Navigation';
@@ -24,16 +24,18 @@ const App = () =>
       <Navigation />
 
       <hr/>
-
-      <Route exact path={routes.LANDING} component={() => <LandingPage />} />
-      <Route exact path={routes.SIGN_UP} component={() => <SignUpPage />} />
-      <Route exact path={routes.SIGN_IN} component={() => <SignInPage />} />
-      <Route exact path={routes.PASSWORD_FORGET} component={() => <PasswordForgetPage />} />
-      <Route exact path={routes.HOME} component={() => <HomePage />} />
-      <Route exact path={routes.ACCOUNT} component={() => <AccountPage />} />
-      <Route exact path={routes.EMP_DETAILS} component={() => <EmployeeDetails />} />
-      <Route exact path={routes.ADD_EMPLOYEE} component={() => <EmployeeRegistration />} />
-      <Route exact path={routes.PROFILE} component={() => <Profile />} />
+      <Switch>
+        <Route exact path="/" component={LandingPage}/>
+        <Route exact path={routes.LANDING} component={LandingPage} />
+        <Route exact path={routes.SIGN_UP} component={SignUpPage} />
+        <Route exact path={routes.SIGN_IN} component={SignInPage} />
+        <Route exact path={routes.PASSWORD_FORGET} component={PasswordForgetPage} />
+        <Route exact path={routes.HOME} component={HomePage} />
+        <Route exact path={routes.ACCOUNT} component={AccountPage} />
+        <Route exact path={routes.EMP_DETAILS} component={EmployeeDetails} />
+        <Route exact path={routes.ADD_EMPLOYEE} component={EmployeeRegistration} />
+        <Route exact path={routes.PROFILE} component={Profile} />
+      </Switch>
       <footer className="container-fluid footer text-center">
         <p>Developed By  <a href="http://www.Xcdify.com/">www.Xcdify.com</a></p> 
       </footer>

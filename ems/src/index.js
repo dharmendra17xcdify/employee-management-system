@@ -10,14 +10,17 @@ import EmployeeRegistration from './components/EmployeeRegistration';
 
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(
-<BrowserRouter>
-    <React.Fragment>
-        <Route exact path="/" component={App}/> 
-        {/* <Route exact path="/signin" component={SignIn}/> 
-        <Route exact path="/home" component={Home}/>
-        <Route exact path="/profile" component={Profile}/>
-        <Route exact path="/employee-regitration" component={EmployeeRegistration}/> */}
-    </React.Fragment>
-</BrowserRouter>, document.getElementById('root'));
+// ReactDOM.render(
+// <BrowserRouter>
+//     <React.Fragment>
+//         <Route exact path="/" component={App}/> 
+//         {/* <Route exact path="/signin" component={SignIn}/> 
+//         <Route exact path="/home" component={Home}/>
+//         <Route exact path="/profile" component={Profile}/>
+//         <Route exact path="/employee-regitration" component={EmployeeRegistration}/> */}
+//     </React.Fragment>
+// </BrowserRouter>, document.getElementById('root'));
+
+ReactDOM.render(<App />, document.getElementById('root'));
+
 registerServiceWorker();

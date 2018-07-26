@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, withRouter, } from 'react-router-dom';
-import { auth, db } from '../firebase';
+import { auth, db, firebase } from '../firebase';
 import * as routes from '../constants/routes';
 
 const SignUpPage = ({ history }) =>
@@ -25,6 +25,21 @@ class SignUpForm extends Component {
   constructor(props) {
     super(props);
     this.state = { ...INITIAL_STATE };
+  }
+
+  componentWillMount(){
+    const {
+      history,
+    } = this.props;
+    firebase.auth.onAuthStateChanged(function(user){
+      if(user){
+       history.push('/')
+      }
+      else{
+       
+      }
+    }.bind(this))
+
   }
 
   onSubmit = (event) => {

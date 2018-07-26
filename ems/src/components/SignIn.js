@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter , Redirect} from 'react-router-dom';
 
 import { SignUpLink } from './SignUp';
 import { PasswordForgetLink } from './PasswordForget';
-import { auth } from '../firebase';
+import { auth,firebase } from '../firebase';
 import * as routes from '../constants/routes';
 import "./SignIn.css";
 
@@ -22,15 +22,30 @@ const INITIAL_STATE = {
   email: '',
   password: '',
   error: null,
-  isLoggedIn: false,
 };
 
 class SignInForm extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { ...INITIAL_STATE };
+    this.state = { ...INITIAL_STATE,  isLoggedIn: false};
   }
+
+  componentWillMount(){
+    const {
+      history,
+    } = this.props;
+    firebase.auth.onAuthStateChanged(function(user){
+      if(user){
+       history.push('/')
+      }
+      else{
+       
+      }
+    }.bind(this))
+
+  }
+
 
   onSubmit = (event) => {
     const {
@@ -44,7 +59,7 @@ class SignInForm extends Component {
 
     auth.doSignInWithEmailAndPassword(email, password)
       .then(() => {
-        this.setState(() => ({ ...INITIAL_STATE }));
+        this.setState(() => ({ ...INITIAL_STATE, isLoggedIn: true }));
         history.push(routes.HOME);
       })
       .catch(error => {
@@ -55,6 +70,10 @@ class SignInForm extends Component {
   }
 
   render() {
+    // if (this.state.isLoggedIn === true) {
+    //   return <Redirect to='/' />
+    // }
+
     const {
       email,
       password,
@@ -101,7 +120,7 @@ class SignInForm extends Component {
   }
 }
 
-export default withRouter(SignInPage);
+export default SignInPage;
 
 export {
   SignInForm,
