@@ -23,7 +23,6 @@ const NavigationAuth = () =>
         <ul className="nav navbar-nav">
             <li><Link to={routes.HOME}>Home</Link></li>
             <li><Link to={routes.ACCOUNT}>Account</Link></li>
-            <li><Link to={routes.EMP_DETAILS}>Employee Detail</Link></li>
             <li><Link to={routes.PROFILE}>User Profile</Link></li>
             <li><Link to={routes.ADD_EMPLOYEE}>Add Employee</Link></li>
         </ul>

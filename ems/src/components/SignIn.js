@@ -37,7 +37,7 @@ class SignInForm extends Component {
     } = this.props;
     firebase.auth.onAuthStateChanged(function(user){
       if(user){
-       history.push('/')
+       history.push('/home')
       }
       else{
        

@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import Search from 'react-search';
+import SearchInput, {createFilter} from 'react-search-input'
 import _ from 'lodash';
 import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
+import * as routes from '../constants/routes';
+import { Link } from 'react-router-dom';
 import './Home.css';
 
 const employees = ['Dharmendra', 'Vaibhav', 'Yogesh', 'Srivats', 'Anurag'];
+
+const KEYS_TO_FILTERS = ['name']
 
 const employeeData = [
     {
@@ -95,7 +101,7 @@ class HomePage extends Component {
 
     this.state = {
       users: null,
-      name: '',
+      employee: '',
       employeeDetails: {
         name: 'Dharmendra',
         fullName: 'Dharmendra Yadav',
@@ -111,6 +117,13 @@ class HomePage extends Component {
         checkOut: '08:20:30 PM'
       }
     };
+
+    this.searchEmployee = this.searchEmployee.bind(this)
+  }
+
+  searchEmployee (event) {
+    this.setState({employee: event.target.value})
+    //this.setState({value: event.target.value});
   }
 
   componentDidMount() {
@@ -120,8 +133,6 @@ class HomePage extends Component {
   }
 
   handleClick = (e) => {
-    // access to e.target here
-    console.log(e.target.innerText);
     let emp = _.find(employeeData, {name: e.target.innerText})
 
     if(emp){
@@ -145,6 +156,7 @@ class HomePage extends Component {
   }
 
   render() {
+    const filteredEmployee = employeeData.filter(createFilter(this.state.employee, KEYS_TO_FILTERS))
     const { users } = this.state;
     return (
       <div>
@@ -154,7 +166,11 @@ class HomePage extends Component {
                     <div className="col-sm-3 sidenav">
                         <h3>Employee List</h3>
                         <div className="input-group">
-                            <input type="text" className="form-control" placeholder="Search"/>
+                            <input type="text" 
+                            className="form-control" 
+                            placeholder="Search"
+                            onChange={this.searchEmployee}
+                            />
                             <span className="input-group-btn">
                             <button className="btn btn-primary" type="button">
                                 <span className="glyphicon glyphicon-search"></span>
@@ -168,7 +184,7 @@ class HomePage extends Component {
                     <div className="col-sm-9 jumbotron">
                         <div className="col-sm-4">
                             <div className="panel panel-primary">
-                                <div className="panel-heading">Employee Details</div>
+                                <div className="panel-heading">Employee Card</div>
                                 <div className="panel-body">
                                 <strong>Name: </strong>{this.state.employeeDetails.fullName}<br/>
                                 <strong>Email: </strong>{this.state.employeeDetails.email}<br/>
@@ -176,6 +192,7 @@ class HomePage extends Component {
                                 <strong>DOJ: </strong>{this.state.employeeDetails.doj}<br/>
                                 <strong>DOB: </strong>{this.state.employeeDetails.dob}<br/>
                                 <strong>Experience: </strong>{this.state.employeeDetails.experience}
+                                <p><Link to={routes.EMP_DETAILS}>View Details</Link></p>
                                 </div>
                             </div>
                         </div>
