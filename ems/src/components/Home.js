@@ -78,22 +78,22 @@ class HomePage extends Component {
   handleClick = (e) => {
       debugger
     let emp = _.find(this.state.empData, {firstname: e.target.innerText})
-
+    
     if(emp){
         this.setState({
             employeeDetails: {
-                name: emp.name,
-                fullName: emp.fullName,
+                name: emp.firstname,
+                fullName: emp.fullname,
                 imageUrl: emp.imageUrl,
-                dob: emp.dob,
+                dob: emp.dateofbirth,
                 email: emp.email,
                 mobile: emp.mobile,
                 experience: emp.experience,
-                doj: emp.doj,
-                leavesAllotted: emp.leavesAllotted,
-                leavesTaken: emp.leavesTaken,
-                checkIn: emp.checkIn,
-                checkOut: emp.checkOut
+                doj: emp.joiningdate,
+                leavesAllotted: 12,
+                leavesTaken: 6,
+                checkIn: '10:13:25 AM',
+                checkOut: '08:20:30 PM'
             }
         });
     }
