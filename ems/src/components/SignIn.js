@@ -40,12 +40,9 @@ class SignInForm extends Component {
        history.push('/home')
       }
       else{
-       
       }
     }.bind(this))
-
   }
-
 
   onSubmit = (event) => {
     const {
@@ -90,7 +87,7 @@ class SignInForm extends Component {
       <form className="modal-content animate" onSubmit={this.onSubmit}>
       <div className="signin">
       <label forhtml="uname"><b>Email</b></label>
-        <input
+        <input 
           value={email}
           onChange={event => this.setState(byPropKey('email', event.target.value))}
           type="text"
@@ -109,8 +106,8 @@ class SignInForm extends Component {
         <label>
               <input type="checkbox" name="remember"/> Remember me
         </label>
-
-        { error && <p>{error.message}</p> }
+       
+        { error && <p className="error">{error.message}</p> }
         <PasswordForgetLink />
         <SignUpLink />
         </div>

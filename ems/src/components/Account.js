@@ -9,7 +9,7 @@ import EmployeeDetails from './Employee';
 const AccountPage = () =>
   <AuthUserContext.Consumer>
     {authUser =>
-      <div className="account">
+      <div className="account forgot-password-header">
         <h3>Email-id: {authUser.email}</h3>
         <PasswordForgetForm />
         <PasswordChangeForm />

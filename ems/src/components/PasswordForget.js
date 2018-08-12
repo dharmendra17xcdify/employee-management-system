@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
+import '../index.css';
 import { auth } from '../firebase';
 
 const PasswordForgetPage = () =>
-  <div>
-    <h1>PasswordForget</h1>
+  <div className="forgot-password-header">
+    <h1>Password Forget</h1>
     <PasswordForgetForm />
   </div>
 
@@ -48,18 +48,18 @@ class PasswordForgetForm extends Component {
     const isInvalid = email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
+      <form className="forgot-password" onSubmit={this.onSubmit}>
+        <input className="form-control"
           value={this.state.email}
           onChange={event => this.setState(byPropKey('email', event.target.value))}
           type="text"
-          placeholder="Email Address"
+          placeholder="Enter your email address to get a password resest link"
         />
         <button disabled={isInvalid} type="submit" className="btn btn-primary">
           Reset My Password
         </button>
 
-        { error && <p>{error.message}</p> }
+        { error && <p className="error">{error.message}</p> }
       </form>
     );
   }

@@ -45,14 +45,14 @@ class PasswordChangeForm extends Component {
       passwordOne === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
+      <form className="form-group" onSubmit={this.onSubmit}>
+        <input className="form-control"
           value={passwordOne}
           onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
           type="password"
           placeholder="New Password"
         />
-        <input
+        <input className="form-control"
           value={passwordTwo}
           onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
           type="password"

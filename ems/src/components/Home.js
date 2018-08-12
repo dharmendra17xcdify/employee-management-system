@@ -3,88 +3,20 @@ import Search from 'react-search';
 import SearchInput, {createFilter} from 'react-search-input'
 import _ from 'lodash';
 import withAuthorization from './withAuthorization';
-import { db } from '../firebase';
+//import { db } from '../firebase';
 import * as routes from '../constants/routes';
 import { Link } from 'react-router-dom';
 import './Home.css';
+import firebase from "firebase";
+// Required for side-effects
+import "firebase/firestore";
 
-const employees = ['Dharmendra', 'Vaibhav', 'Yogesh', 'Srivats', 'Anurag'];
+const firestore = firebase.firestore();
+const settings = {/* your settings... */ timestampsInSnapshots: true};
+firestore.settings(settings);
+let db = firebase.firestore();
 
-const KEYS_TO_FILTERS = ['name']
-
-const employeeData = [
-    {
-        name: 'Dharmendra',
-        fullName: 'Dharmendra Yadav',
-        imageUrl: 'images/authors/marktwain.jpg',
-        dob: '17/08/1993',
-        email: 'dharmendra17893@gmail.com',
-        mobile: 8108401991,
-        experience: '1 Year',
-        doj: '01/06/2017',
-        leavesAllotted: 12,
-        leavesTaken: 6,
-        checkIn: '10:13:25 AM',
-        checkOut: '08:20:30 PM'
-
-    },
-    {
-        name: 'Vaibhav',
-        fullName: 'Vaibhav Agrawal',
-        imageUrl: 'images/authors/marktwain.jpg',
-        dob: '04/04/1991',
-        email: 'vaibhav.agrawal@xcdify.com',
-        mobile: 8147286210,
-        experience: '5 Years',
-        doj: '01/12/2016',
-        leavesAllotted: 12,
-        leavesTaken: 5,
-        checkIn: '10:05:25 AM',
-        checkOut: '08:20:30 PM'
-    },
-    {
-        name: 'Yogesh',
-        fullName: 'Yogesh Dhami',
-        imageUrl: 'images/authors/marktwain.jpg',
-        dob: '05/11/1988',
-        email: 'yogesh.dhami@xcdify.com',
-        mobile: 7987225434,
-        experience: '3 Year',
-        doj: '01/06/2016',
-        leavesAllotted: 12,
-        leavesTaken: 2,
-        checkIn: '10:05:25 AM',
-        checkOut: '08:00:30 PM'
-    },
-    {
-        name: 'Srivats',
-        fullName: 'Srivats Krishnan',
-        imageUrl: 'images/authors/marktwain.jpg',
-        dob: '17/08/1993',
-        email: 'shrivats@gmail.com',
-        mobile: 9825369988,
-        experience: '1 Year',
-        doj: '01/08/2017',
-        leavesAllotted: 12,
-        leavesTaken: 4,
-        checkIn: '10:11:25 AM',
-        checkOut: '08:15:30 PM'
-    },
-    {
-        name: 'Anurag',
-        fullName: 'Anurag Maratha',
-        imageUrl: 'images/authors/marktwain.jpg',
-        dob: '17 Aug 1993',
-        email: 'anurag@gmail.com',
-        mobile: 8822556644,
-        experience: 'Fresher',
-        doj: '01/05/2018',
-        leavesAllotted: 12,
-        leavesTaken: 1,
-        checkIn: '10:15:25 AM',
-        checkOut: '08:10:30 PM'
-    }
-];
+const KEYS_TO_FILTERS = ['firstname']
 
 function Employee ({title, onClick}) {
     return (<div>
@@ -93,17 +25,17 @@ function Employee ({title, onClick}) {
     );
   }
 
-  
-
 class HomePage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+        empList: [],
+        empData: [],
       users: null,
       employee: '',
       employeeDetails: {
-        name: 'Dharmendra',
+        firstname: 'Dharmendra',
         fullName: 'Dharmendra Yadav',
         imageUrl: 'images/authors/marktwain.jpg',
         dob: '17/08/1993',
@@ -126,14 +58,26 @@ class HomePage extends Component {
     //this.setState({value: event.target.value});
   }
 
-  componentDidMount() {
-    db.onceGetUsers().then(snapshot =>
-      this.setState(() => ({ users: snapshot.val() }))
-    );
+  componentWillMount() {
+    db.collection("employee").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          console.log(`${doc.id} => ${doc.data()}`);
+          this.state.empList.push(doc.data().firstname);
+          this.state.empData.push(doc.data());
+          this.setState(() => ({ empList: this.state.empList }))
+      });
+    });
   }
 
+//   componentDidMount() {
+//     db.onceGetUsers().then(snapshot =>
+//       this.setState(() => ({ users: snapshot.val() }))
+//     );
+//   }
+
   handleClick = (e) => {
-    let emp = _.find(employeeData, {name: e.target.innerText})
+      debugger
+    let emp = _.find(this.state.empData, {firstname: e.target.innerText})
 
     if(emp){
         this.setState({
@@ -156,7 +100,7 @@ class HomePage extends Component {
   }
 
   render() {
-    const filteredEmployee = employeeData.filter(createFilter(this.state.employee, KEYS_TO_FILTERS))
+    //const filteredEmployee = employeeData.filter(createFilter(this.state.employee, KEYS_TO_FILTERS))
     const { users } = this.state;
     return (
       <div>
@@ -178,7 +122,8 @@ class HomePage extends Component {
                             </span>
                         </div>
                         <ul className="nav nav-pills nav-stacked">
-                            <li className="employee" value={employees} onClick={this.handleClick.bind(this)}>{employees.map((title) => <Employee title={title} key={title}/>)}</li>
+                            <li className="employee" 
+                            onClick={this.handleClick.bind(this)}>{this.state.empList.map((title) => <Employee title={title} key={title}/>)}</li>
                         </ul><br></br>
                     </div>
                     <div className="col-sm-9 jumbotron">

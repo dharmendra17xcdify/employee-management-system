@@ -4,7 +4,7 @@ import { auth, db, firebase } from '../firebase';
 import * as routes from '../constants/routes';
 
 const SignUpPage = ({ history }) =>
-  <div>
+  <div className="forgot-password-header">
     <h1>SignUp</h1>
     <SignUpForm history={history} />
   </div>
@@ -88,26 +88,26 @@ class SignUpForm extends Component {
       username === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
+      <form className="form-group" onSubmit={this.onSubmit}>
+        <input className="form-control"
           value={username}
           onChange={event => this.setState(byPropKey('username', event.target.value))}
           type="text"
           placeholder="Full Name"
         />
-        <input
+        <input className="form-control"
           value={email}
           onChange={event => this.setState(byPropKey('email', event.target.value))}
           type="text"
           placeholder="Email Address"
         />
-        <input
+        <input className="form-control"
           value={passwordOne}
           onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
           type="password"
           placeholder="Password"
         />
-        <input
+        <input className="form-control"
           value={passwordTwo}
           onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
           type="password"
@@ -117,7 +117,7 @@ class SignUpForm extends Component {
           Sign Up
         </button>
 
-        { error && <p>{error.message}</p> }
+        { error && <p className="error">{error.message}</p> }
       </form>
     );
   }
