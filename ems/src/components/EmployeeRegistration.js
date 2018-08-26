@@ -1,9 +1,9 @@
 import React from "react";
+import { Redirect } from 'react-router'
 import "./EmployeeRegistration.css";
 import withAuthorization from './withAuthorization';
-import AuthUserContext from './AuthUserContext';
 import FormValidator from './FormValidator';
-import * as routes from '../constants/routes';
+import _ from 'lodash';
 
 import firebase from "firebase";
 // Required for side-effects
@@ -134,6 +134,8 @@ class EmployeeRegistration extends React.Component {
 
     this.state = {
       ...INITIAL_STATE,
+      empData: [],
+      errorMessage: '',
       validation: this.validator.valid(),
     }
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -150,27 +152,30 @@ class EmployeeRegistration extends React.Component {
   }
 
   componentWillMount() {
+    const empList = [];
     db.collection("employee").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
+        empList.push(doc.data());
+        this.setState(() => ({ 
+          empData: empList,
+      }))
       });
     });
   }
 
-  // componentWillUnmount() {
-  //   this.firebaseRef.off();
-  // }
-
   handleFormSubmit = event => {
     event.preventDefault();
-    // let data = {
-      
-    // }
     const validation = this.validator.validate(this.state);
     this.setState({ validation, ...INITIAL_STATE });
-    this.submitted = true;
 
-    if (validation.isValid) {
+    let emailExist = _.find(this.state.empData, {email: this.state.email})
+    
+    if(emailExist){
+      this.setState({
+        errorMessage: 'This email already exists!.'
+      })
+    } else if (validation.isValid) {
+      this.submitted = true;
       db.collection("employee").add({
         employeenumber: this.state.employeenumber,
         firstname: this.state.firstname,
@@ -193,13 +198,21 @@ class EmployeeRegistration extends React.Component {
           console.error("Error saving employee: ", error);
       });
     } 
+
+    
   }
 
   render() {
-    let validation = this.submitted ?                         // if the form has been submitted at least once
+
+    if (this.submitted === true) {
+      return (
+      <Redirect to="/home"/>
+      )
+    }
+
+    let validation = this.submitted && this.state.errorMessage === ''?                         // if the form has been submitted at least once
                       this.validator.validate(this.state) :   // then check validity every time we render
                       this.state.validation                   // otherwise just use what's in state
-
     return (
       <div>
         <form className="form-group">
@@ -218,6 +231,7 @@ class EmployeeRegistration extends React.Component {
                     id="employeenumber"
                     onChange={event => this.setState(byPropKey('employeenumber', event.target.value), this.handleInputChange(event))}
                   />
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.employeenumber.message}</span>
                 </div>
 
@@ -230,6 +244,7 @@ class EmployeeRegistration extends React.Component {
                     name="firstname" 
                     onChange={event => this.setState(byPropKey('firstname', event.target.value), this.handleInputChange(event))}
                   />
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.firstname.message}</span>
                 </div>
 
@@ -242,19 +257,8 @@ class EmployeeRegistration extends React.Component {
                     name="lastname" 
                     onChange={event => this.setState(byPropKey('lastname', event.target.value), this.handleInputChange(event))}
                   />
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.lastname.message}</span>
-                </div>
-
-                <div className={validation.fullname.isInvalid ? 'has-error' : ''}>
-                  <label forhtml="fullname"><b>Full Name</b></label>
-                  <input className="form-control" 
-                    type="text" 
-                    placeholder="Enter Full Name" 
-                    maxLength={50} 
-                    name="fullname" 
-                    onChange={event => this.setState(byPropKey('fullname', event.target.value), this.handleInputChange(event))}
-                  />
-                  <span className="help-block">{validation.fullname.message}</span>
                 </div>
 
                 <div className={validation.gender.isInvalid ? 'has-error' : ''}>
@@ -265,6 +269,7 @@ class EmployeeRegistration extends React.Component {
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                   </select>
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.gender.message}</span>
                 </div>
 
@@ -276,6 +281,7 @@ class EmployeeRegistration extends React.Component {
                     name="dateofbirth" 
                     onChange={event => this.setState(byPropKey('dateofbirth', event.target.value), this.handleInputChange(event))}
                   />
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.dateofbirth.message}</span>
                 </div>
 
@@ -288,10 +294,11 @@ class EmployeeRegistration extends React.Component {
                     name="address"
                     onChange={event => this.setState(byPropKey('address', event.target.value), this.handleInputChange(event))}
                   />
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.address.message}</span>
                 </div>
 
-                <div className={ validation.email.isInvalid ? 'has-error' : ''}>
+                <div className={ validation.email.isInvalid || this.state.errorMessage ? 'has-error' : ''}>
                   <label forhtml="email"><b>Email</b></label>
                   <input className="form-control" 
                     type="email" 
@@ -299,7 +306,8 @@ class EmployeeRegistration extends React.Component {
                     name="email" 
                     onChange={event => this.setState(byPropKey('email', event.target.value), this.handleInputChange(event))}
                   />
-                  <span className="help-block">{validation.email.message}</span>
+                  <small className="text-muted">*Required</small>
+                  <span className="help-block">{validation.email.message || this.state.errorMessage}</span>
                 </div>
 
                 <div className={ validation.mobile.isInvalid ? 'has-error' : ''}>
@@ -311,6 +319,7 @@ class EmployeeRegistration extends React.Component {
                     name="mobile" 
                     onChange={event => this.setState(byPropKey('mobile', event.target.value), this.handleInputChange(event))}
                   />
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.mobile.message}</span>
                 </div>
 
@@ -323,6 +332,7 @@ class EmployeeRegistration extends React.Component {
                     name="experience" 
                     onChange={event => this.setState(byPropKey('experience', event.target.value), this.handleInputChange(event))}
                   />
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.experience.message}</span>
                 </div>
 
@@ -334,6 +344,7 @@ class EmployeeRegistration extends React.Component {
                     <option value="btech">BE/B.Tech</option>
                     <option value="mtech">ME/M.Tech</option>
                   </select>
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.qualification.message}</span>
                 </div>
 
@@ -346,6 +357,7 @@ class EmployeeRegistration extends React.Component {
                     name="university" 
                     onChange={event => this.setState(byPropKey('university', event.target.value), this.handleInputChange(event))}
                   />
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.university.message}</span>
                 </div>
 
@@ -357,11 +369,22 @@ class EmployeeRegistration extends React.Component {
                     name="joiningdate" 
                     onChange={event => this.setState(byPropKey('joiningdate', event.target.value), this.handleInputChange(event))}
                   />
+                  <small className="text-muted">*Required</small>
                   <span className="help-block">{validation.joiningdate.message}</span>
                 </div>
+                
+                {/* <div>
+                <label forhtml="profilePic"><b>Photo</b></label>
+                <input className="form-control" 
+                  type="file" 
+                  placeholder="upload image" 
+                  name="profilePic" 
+                  onChange={this.selectImage}
+                />
+                <button onClick={this.handleUpload}>Upload</button>
+                </div> */}
 
                 <hr></hr>
-                {/* <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p> */}
 
                 <button className="btn btn-primary" onClick={this.handleFormSubmit} type="submit">Save</button>
             </div>
@@ -369,13 +392,7 @@ class EmployeeRegistration extends React.Component {
       </div>
     );
   }
-  // <AuthUserContext.Consumer>
-  //   {authUser =>
-      
-  //   }
-  // </AuthUserContext.Consumer>
 }
-  
 
 const authCondition = (authUser) => !!authUser;
 

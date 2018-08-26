@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import Search from 'react-search';
-import SearchInput, {createFilter} from 'react-search-input'
 import _ from 'lodash';
 import withAuthorization from './withAuthorization';
-//import { db } from '../firebase';
-import * as routes from '../constants/routes';
-import { Link } from 'react-router-dom';
 import './Home.css';
 import firebase from "firebase";
 // Required for side-effects
@@ -16,74 +11,150 @@ const settings = {/* your settings... */ timestampsInSnapshots: true};
 firestore.settings(settings);
 let db = firebase.firestore();
 
-const KEYS_TO_FILTERS = ['firstname']
-
 function Employee ({title, onClick}) {
     return (<div>
     <h4 className="selected" value={title} data-id={title}>{title}</h4>
     </div>
     );
-  }
+}
+
+class EmployeeDetails extends React.Component {
+    render(){
+        const { details } = this.props;
+
+        return <div className="row">
+            <div className="col-xs-12 col-sm-12 toppad" >
+                <div className="panel panel-info">
+                    <div className="user-name background-blue">
+                        <h3>Employee Details</h3>
+                    </div>
+                    <div className="panel-body">
+                        <div className="row">
+                        <div className=" col-md-12 col-lg-12 "> 
+                        <table className="table table-user-information">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Employee Code</strong></td>
+                                    <td>{details.employeenumber}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>User Name</strong></td>
+                                    <td>{details.fullName}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>First Name</strong></td>
+                                    <td>{details.firstname}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Last Name</strong></td>
+                                    <td>{details.lastname}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Date of Birth</strong></td>
+                                    <td>{details.dob}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gender</strong></td>
+                                    <td>{details.gender}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Address</strong></td>
+                                    <td>{details.address}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Qualification</strong></td>
+                                    <td>{details.qualification}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>University</strong></td>
+                                    <td>{details.university}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Experience</strong></td>
+                                    <td>{details.experience}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Email</strong></td>
+                                    <td>{details.email}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mobile Number</strong></td>
+                                    <td>{details.mobile}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Address</strong></td>
+                                    <td>{details.address}</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Joining Date</strong></td>
+                                    <td>{details.doj}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+        loading: true,
         empList: [],
         empData: [],
-      users: null,
-      employee: '',
-      employeeDetails: {
-        firstname: 'Dharmendra',
-        fullName: 'Dharmendra Yadav',
-        imageUrl: 'images/authors/marktwain.jpg',
-        dob: '17/08/1993',
-        email: 'dharmendra17893@gmail.com',
-        mobile: 8108401991,
-        experience: '1 Year',
-        doj: '01/06/2017',
-        leavesAllotted: 12,
-        leavesTaken: 6,
-        checkIn: '10:13:25 AM',
-        checkOut: '08:20:30 PM'
-      }
+        isDetails: false,
+        users: null,
+        employeeDetails: {
+            leavesAllotted: 12,
+            leavesTaken: 6,
+            checkIn: '10:13:25 AM',
+            checkOut: '08:20:30 PM'
+        }
     };
-
-    this.searchEmployee = this.searchEmployee.bind(this)
   }
 
-  searchEmployee (event) {
-    this.setState({employee: event.target.value})
-    //this.setState({value: event.target.value});
+  componentWillReceiveProps(){
+    this.setState({
+        isDetails: false,
+    });
   }
-
+  
   componentWillMount() {
+      const data = [];
+      const name = [];
     db.collection("employee").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
-          this.state.empList.push(doc.data().firstname);
-          this.state.empData.push(doc.data());
-          this.setState(() => ({ empList: this.state.empList }))
+        name.push(doc.data().firstname);
+        data.push(doc.data());
+        this.setState(() => ({ 
+            empList: name,
+            empData: data, 
+            loading: false 
+        }))
       });
     });
   }
 
-//   componentDidMount() {
-//     db.onceGetUsers().then(snapshot =>
-//       this.setState(() => ({ users: snapshot.val() }))
-//     );
-//   }
-
-  handleClick = (e) => {
-      debugger
-    let emp = _.find(this.state.empData, {firstname: e.target.innerText})
+  handleClick = (name) => {
+    let emp = _.find(this.state.empData, {firstname: name})
     
     if(emp){
         this.setState({
             employeeDetails: {
-                name: emp.firstname,
-                fullName: emp.fullname,
+                employeenumber: emp.employeenumber,
+                firstname: emp.firstname,
+                lastname: emp.lastname,
+                fullName: emp.firstname + " " + emp.lastname,
+                gender: emp.gender,
+                address: emp.address,
+                qualification: emp.qualification,
+                university: emp.university,
                 imageUrl: emp.imageUrl,
                 dob: emp.dateofbirth,
                 email: emp.email,
@@ -93,41 +164,57 @@ class HomePage extends Component {
                 leavesAllotted: 12,
                 leavesTaken: 6,
                 checkIn: '10:13:25 AM',
-                checkOut: '08:20:30 PM'
+                checkOut: '08:20:30 PM',
             }
         });
     }
   }
 
+  viewDetails() {
+      this.setState({
+        isDetails: true,
+      });
+  };
+
   render() {
-    //const filteredEmployee = employeeData.filter(createFilter(this.state.employee, KEYS_TO_FILTERS))
-    const { users } = this.state;
+    const { loading } = this.state;
+
+    if(loading) { // if your component doesn't have to wait for an async action, remove this block 
+      return <div className="loader"></div>; // render null when app is not ready
+    }
+
+    if (this.state.isDetails) {
+        return (
+        <EmployeeDetails details={this.state.employeeDetails}></EmployeeDetails>
+        )
+    }
+    
     return (
-      <div>
+      <div className="loader">
         <div>
             <div className="container-fluid">
                 <div className="row content">
                     <div className="col-sm-3 sidenav">
                         <h3>Employee List</h3>
-                        <div className="input-group">
-                            <input type="text" 
-                            className="form-control" 
-                            placeholder="Search"
-                            onChange={this.searchEmployee}
-                            />
-                            <span className="input-group-btn">
-                            <button className="btn btn-primary" type="button">
-                                <span className="glyphicon glyphicon-search"></span>
-                            </button>
-                            </span>
-                        </div>
+                        <hr/>
                         <ul className="nav nav-pills nav-stacked">
-                            <li className="employee" 
-                            onClick={this.handleClick.bind(this)}>{this.state.empList.map((title) => <Employee title={title} key={title}/>)}</li>
+                        {
+                            this.state.empList.map((title) =>
+                            <li key={title} className="employee" onClick={()=>this.handleClick(title)}>
+                                 <Employee title={title} />
+                            </li>
+                        )}
                         </ul><br></br>
                     </div>
                     <div className="col-sm-9 jumbotron">
-                        <div className="col-sm-4">
+                        {this.state.employeeDetails.fullName === undefined &&
+                            <div>
+                                <p>Select an employee</p>
+                            </div>
+                        }
+                        {this.state.employeeDetails.fullName !== undefined &&
+                        <div>
+                            <div className="col-sm-4">
                             <div className="panel panel-primary">
                                 <div className="panel-heading">Employee Card</div>
                                 <div className="panel-body">
@@ -137,7 +224,7 @@ class HomePage extends Component {
                                 <strong>DOJ: </strong>{this.state.employeeDetails.doj}<br/>
                                 <strong>DOB: </strong>{this.state.employeeDetails.dob}<br/>
                                 <strong>Experience: </strong>{this.state.employeeDetails.experience}
-                                <p><Link to={routes.EMP_DETAILS}>View Details</Link></p>
+                                <button className="btn btn-primary" onClick={this.viewDetails.bind(this)}>View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -159,25 +246,16 @@ class HomePage extends Component {
                                 </div>
                             </div>
                         </div>
+                        </div>
+                        }
                     </div>
                 </div>
             </div>
         </div>
-        { !!users && <UserList users={users} /> }
       </div>
     );
   }
 }
-
-const UserList = ({ users }) =>
-  <div>
-    <h2>List of Usernames of Users</h2>
-    <p>(Saved on Sign Up in Firebase Database)</p>
-
-    {Object.keys(users).map(key =>
-      <div key={key}>{users[key].username}</div>
-    )}
-  </div>
 
 const authCondition = (authUser) => !!authUser;
 

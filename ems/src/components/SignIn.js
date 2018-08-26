@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter , Redirect} from 'react-router-dom';
-
 import { SignUpLink } from './SignUp';
 import { PasswordForgetLink } from './PasswordForget';
 import { auth,firebase } from '../firebase';
@@ -67,10 +65,6 @@ class SignInForm extends Component {
   }
 
   render() {
-    // if (this.state.isLoggedIn === true) {
-    //   return <Redirect to='/' />
-    // }
-
     const {
       email,
       password,

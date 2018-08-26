@@ -13,8 +13,9 @@ class EmployeeDetails extends Component{
     }
 
     render(){
+        const { details } = this.props;
+
         return <div className="row">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
             <div className="col-xs-12 col-sm-12 toppad" >
                 <div className="panel panel-info">
                     <div className="user-name background-blue">
@@ -27,7 +28,7 @@ class EmployeeDetails extends Component{
                             <tbody>
                                 <tr>
                                     <td>User Name</td>
-                                    <td>DHARMENDRA YADAV</td>
+                                    <td>DHARMENDRA YADAV{this.props.details}</td>
                                 </tr>
                                 <tr>
                                     <td>First Name</td>
@@ -69,51 +70,9 @@ class EmployeeDetails extends Component{
                 </div>
             </div>
         </div>
-        }
+    }
 }
 
 const authCondition = (authUser) => !!authUser;
 
 export default withAuthorization(authCondition)(EmployeeDetails);
-
-// import React, {Component} from 'react';
-// import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-// import withAuthorization from './withAuthorization';
-
-// class EmployeeDetails extends Component{
-    // constructor(props){
-    //     super(props);
-
-    //     this.state = {
-    //         data: {}
-    //     }
-    // }
-
-//     // componentDidMount() {
-//     //     this.setState({
-//     //         data : this.state.employeeDetails,
-//     //     })
-//     // }
-      
-//     render(){
-// 		return ( <div><h2>Employee Details</h2>
-// 			<div className="emp-container">
-// 			<div className="emp-details">
-// 				 <BootstrapTable   hover={true}>
-// 				      <TableHeaderColumn dataField="name" isKey={true} >Name</TableHeaderColumn>
-// 					  <TableHeaderColumn dataField="email" >Email</TableHeaderColumn>
-// 					  <TableHeaderColumn dataField="mobile" >Mobile</TableHeaderColumn>
-// 					  <TableHeaderColumn dataField="doj" >Date of Joining</TableHeaderColumn>
-// 				      <TableHeaderColumn dataField="dob" >Date of Birth</TableHeaderColumn>
-// 					  <TableHeaderColumn dataField="experiance"  >Experience</TableHeaderColumn>
-// 				  </BootstrapTable>
-// 			</div>
-// 			</div>
-//             </div>
-//         )
-// 	}
-// }
-
-// const authCondition = (authUser) => !!authUser;
-
-// export default withAuthorization(authCondition)(EmployeeDetails);
